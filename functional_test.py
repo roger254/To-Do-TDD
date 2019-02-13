@@ -1,6 +1,8 @@
 from selenium import webdriver
 import unittest
 
+from selenium.webdriver.common.keys import Keys
+
 
 class NewVisitorTest(unittest.TestCase):
 
@@ -18,18 +20,28 @@ class NewVisitorTest(unittest.TestCase):
 
         # {USER} notices the page title and header mention to-do lists
         self.assertIn('To-Do', self.browser.title)
-        self.fail('Finish the test!')
 
         # User is invited to enter a to-do item straight away
+        input_box = self.browser.find_element_by_id('id_new_item')
+        self.assertEqual(
+            input_box.get_attribute('placeholder'),
+            'Enter a to-do item'
+        )
 
         # User types 'Buy a book' into a text box
+        input_box.send_keys('The Buy a book')
 
         # when user hits enter, the page updates, and now the page lists
         # '1: Buy a book; as an item in a to-do list
-
+        input_box.send_keys(Keys.ENTER)
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertTrue(
+            any(row.text == '1: Buy a book' for row in rows)
+        )
         # There is still a text box inviting her to add another item
         # user enters 'Read book 2 hours a day'
-
+        self.fail('Finish the test!')
         # The page updates again and now shows both items on her list
 
         # user wonders whether the site will remember the list. The user

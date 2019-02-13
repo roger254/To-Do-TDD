@@ -1,3 +1,5 @@
+import time
+
 from selenium import webdriver
 import unittest
 
@@ -34,6 +36,7 @@ class NewVisitorTest(unittest.TestCase):
         # when user hits enter, the page updates, and now the page lists
         # '1: Buy a book; as an item in a to-do list
         input_box.send_keys(Keys.ENTER)
+        time.sleep(1)
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
         self.assertTrue(
